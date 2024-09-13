@@ -1,7 +1,7 @@
 from pathlib import Path
 from subprocess import run
 
-input_dir = Path('mffm11_v2024.04.04_HarmonyOSSans/*')
+input_dir = Path('mffm11_v2024.04.04_HarmonyOSSans/')
 output = Path('./dist/mffm11_v2024.04.04_HarmonyOSSans.zip')
 
 def get_version():
@@ -20,23 +20,16 @@ def build():
         '7z',
         'a',
         str(output.absolute()),
-        str(input_dir.absolute()),
+        f'{str(input_dir.absolute())}/*',
     ])
     assert process.returncode == 0, 'failed to create zip file'
 
 def release():
     version = get_version()
-    process = run([
-        'gh',
-        'release',
-        'create',
-        f'V{version}',
-        '--title',
-        f'V{version}',
-        str(output.absolute()),
-    ])
+    process = run(f'gh release create V{version} --title "V{version}" --notes "" {output.absolute()}')
 
     assert process.returncode == 0, 'failed to create release'
 
 if __name__ == '__main__':
     build()
+    release()
