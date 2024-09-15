@@ -49,14 +49,14 @@ def hash_file(path: Path, *, chunk_size: int = 4096):
     return hasher.hexdigest()
 
 
-def build():
+def build(force: bool = False):
     version = get_version()
     _output_file = Path(str(output_file.absolute().resolve()).format(version=version))
 
     make_dir(_output_file.parent)
     make_dir(commit_cache_file.parent)
 
-    if (
+    if not force and (
         _output_file.is_file()
         and (
             commit_cache_file.read_text()
@@ -88,10 +88,13 @@ def build():
 
     commit_cache_file.write_text(get_last_commit())
     module_prop_cache_file.write_text(hash_file(module_prop_file))
+
+    print(f"build completed, output file name: {_output_file.name}")
     return _output_file
 
 
 def release(*files: Path):
+    print("\ncreating release...\n")
     version = get_version()
     process = run(
         f'gh release create V{version} '
@@ -99,12 +102,13 @@ def release(*files: Path):
     )
 
     assert process.returncode == 0, "failed to create release"
+    print("release created successfully")
 
 
 if __name__ == "__main__":
-    args = map(lambda x: x.lower(), sys.argv[1:])
+    args = tuple(map(lambda x: x.lower(), sys.argv[1:]))
 
-    release_file = build()
+    release_file = build(("--force" in args or "-f" in args))
 
     if release_file is not None and ("--release" in args or "-r" in args):
         release(release_file)
