@@ -269,7 +269,7 @@ singlefont(){
 }
 
 monospace(){
-    if [ -f $FONTDIR/Mono*.ttf ]; then
+    if ls "$FONTDIR"/Mono*.ttf 1> /dev/null 2>&1; then
         cp $FONTDIR/Mono*.ttf $SYSFONT/CutiveMono.ttf
 	    cp $FONTDIR/Mono*.ttf $SYSFONT/DroidSansMono.ttf
 		sleep 0.5
