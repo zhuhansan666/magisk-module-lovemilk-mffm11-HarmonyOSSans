@@ -13,6 +13,9 @@ cp /product/etc/fonts_customization.xml /sdcard/MFFM/fontsxml/fonts_customizatio
 ```
 You only need to do this once. Repeat this only if you change ROM! After this you are ready to install, update, dirty install, install `MFFMv12` modules without any trouble. 
 
+> [!IMPORTANT]
+> 如果您使用基于 KernelSU 的 Root 解决方案 (诸如 KernelSU, Sukisu), 在安装本模块前请先安装 [meta-overlayfs](https://github.com/KernelSU-Modules-Repo/meta-overlayfs) 并在重启后安装本模块
+
 ### 简单概括: 您需要在安装前使用 Termux 运行上面代码块的指令
 
 ## 下载发行版中最新版本的 .zip 文件, 后直接刷入 Magisk / APatch / KSU 等框架重启后方可使用
